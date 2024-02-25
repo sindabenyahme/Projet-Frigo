@@ -3,7 +3,7 @@
     <v-app-bar
       color="primary"
       density="compact">
-      <v-app-bar-title>Application recherche Produit</v-app-bar-title>
+      <v-app-bar-title>Vous avez faim, bienvenue chez Frigo Sinda</v-app-bar-title>
       <v-btn to="/PageFrigo">Page Frigo</v-btn>
       <v-btn to="/">Home</v-btn>
     </v-app-bar>

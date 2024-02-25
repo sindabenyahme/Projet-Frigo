@@ -88,14 +88,11 @@ function handler1Delete(p) {
 
 
 function handlerAdd(nom, qte, photo) {
-  // -- il faut créer un nouveau "livre" instance de la classe
-
   console.log(nom, qte);
   if (qte <= 0) {
-    // Si la quantité est négative ou nulle, on force la quantité à 1
+    
     qte = 1;
   }
-
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -123,9 +120,7 @@ function handlerAdd(nom, qte, photo) {
 }
 
 function handlerSearch(motcle) {
-  /* on récupère le mot clé nécessaire à la recherche */
   const fetchOptions = { method: "GET" };
-
   fetch(url + "?search=" + motcle, fetchOptions)
     .then((response) => {
       return response.json();
@@ -134,23 +129,20 @@ function handlerSearch(motcle) {
       console.log(dataJSON);
       let ProduitExist = dataJSON;
       let rechercheElement = document.getElementById("recherche");
-      rechercheElement.innerHTML = ""; // Clear existing content
+      rechercheElement.innerHTML = ""; 
       let ulElement = document.createElement("ul");
-      ulElement.style.listStyleType = "none"; // Désactiver les points de la liste
+      ulElement.style.listStyleType = "none";
       for (let p of ProduitExist) {
         let liElement = document.createElement("li");
         let imageElement = document.createElement("img");
         imageElement.src = p.photo;
-        // Ajout de la classe CSS au style de l'image
-        imageElement.style.cssText = "width: 200px; height: auto; display: block; margin: 0 auto;"; // Exemple de style CSS pour centrer l'image
+        imageElement.style.cssText = "width: 200px; height: auto; display: block; margin: 0 auto;"; 
         liElement.appendChild(imageElement);
-
-        // Création d'un élément de paragraphe pour afficher le nom et la quantité restante
         let messageElement = document.createElement("p");
         messageElement.textContent = p.nom + "  il en reste " + p.qte;
-        messageElement.style.textAlign = "center"; // Centrer le texte
-        messageElement.style.color = "#007bff"; // Couleur du texte
-        messageElement.style.fontSize = "20px"; // Taille de la police
+        messageElement.style.textAlign = "center"; 
+        messageElement.style.color = "#007bff";
+        messageElement.style.fontSize = "20px"; 
         liElement.appendChild(messageElement);
 
         ulElement.appendChild(liElement);
@@ -169,10 +161,14 @@ function handlerSearch(motcle) {
 
 <template>
  <div>
+  <p id="ici"></p>
+  <h3>Qu'est-ce que vous voulez manger ? </h3>
+
+  <RechercheProduit @searchP="handlerSearch" />
   <p id="ici2"></p>
-  <h3>Liste des Produits</h3>
+  <h3>Les aliments qu'on propose</h3>
   <v-row dense>
-    <!-- Boucle pour afficher les cartes produits -->
+   
     <CarteProduit v-for="produit in listeP"
                    :key="produit.id"
                    :produit="produit"
@@ -183,10 +179,7 @@ function handlerSearch(motcle) {
     <AjouterProduit :handlerAdd="handlerAdd"/>
     
   </v-row>
-  <p id="ici"></p>
-  <h3>Rechercher un Produit</h3>
-
-  <RechercheProduit @searchP="handlerSearch" />
+  
   
 </div>
 
@@ -201,6 +194,7 @@ h3 {
   font-size: 30px;
   font-family: "Times New Roman", Times, serif;
   color: #1c9ee6;
+  padding: 20px;
 }
 
 #ici{

@@ -2,26 +2,7 @@
 import { ref } from 'vue';
 import { defineProps } from 'vue';
 
-const { produit, handler1Add, handler1Delete, handlerAdd , handlerDelete} = defineProps(["produit", "handler1Add", "handler1Delete", "handlerAdd", "handlerDelete"]);
-
-const nomProduit = ref('');
-const quantite = ref(0);
-const photoUrl = ref('');
-
-const ajouterProduit = () => {
-  if (!nomProduit.value || !quantite.value || !photoUrl.value) {
-    alert('Veuillez remplir tous les champs');
-    return;
-  }
-
-  // Appeler la fonction handlerAdd avec les données saisies par l'utilisateur
-  handlerAdd(nomProduit.value, quantite.value, photoUrl.value);
-
-  // Réinitialiser les champs après l'ajout du produit
-  nomProduit.value = '';
-  quantite.value = 0;
-  photoUrl.value = '';
-};
+const { produit, handler1Add, handler1Delete , handlerDelete} = defineProps(["produit", "handler1Add", "handler1Delete", "handlerDelete"]);
 </script>
 
 
@@ -62,37 +43,37 @@ const ajouterProduit = () => {
 
 <style scoped>
 .product-card {
-  background-color: #f0f0f0; /* Couleur de fond de la carte */
-  border-radius: 10px; /* Coins arrondis */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  background-color: #f0f0f0; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .product-info {
   
-  font-size: 20px; /* Taille de la police */
-  color: #007bff; /* Couleur du texte */
-  font-family: "Times New Roman", Times, serif; /* Police */
+  font-size: 20px; 
+  color: #007bff; 
+  font-family: "Times New Roman", Times, serif; 
 }
 
 .product-name {
   font-weight: bold;
   font-size: 25px;
-  font-family: "Times New Roman", Times, serif; /* Police */ /* Gras pour le nom du produit */
+  font-family: "Times New Roman", Times, serif; 
 }
 
 .product-quantity {
   font-weight: bold;
   font-size: 25px;
-  font-style: italic; /* Italique pour la quantité */
+  font-style: italic; 
 }
 
 .product-btn {
-  background-color: #007bff; /* Couleur de fond des boutons */
-  color: #fff; /* Couleur du texte des boutons */
-  margin-right: 5px; /* Marge à droite pour espacement */
+  background-color: #007bff; 
+  color: #fff; 
+  margin-right: 5px; 
 }
 
 .product-btn:hover {
-  background-color: #0056b3; /* Couleur de fond des boutons au survol */
+  background-color: #0056b3; 
 }
 </style>
