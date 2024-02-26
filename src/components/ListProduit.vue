@@ -1,44 +1,42 @@
 <script setup>
-import {onMounted, reactive} from "vue";
+import { onMounted, reactive } from "vue";
 import Produit from "../Produit.js";
 import CarteProduit from "@/components/CarteProduit.vue";
-import AjouterProduit from "../components/AjouterProduit.vue"
+import AjouterProduit from "../components/AjouterProduit.vue";
 import RechercheProduit from "../components/RechercheProduit.vue";
 
 const listeP = reactive([]);
-const url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/5/produits"
+const url = "https://webmmi.iut-tlse3.fr/~pecatte/frigo/public/5/produits";
 
 function getProduit() {
   fetch(url)
     .then((response) => {
-      return response.json()
+      return response.json();
     })
     .then((dataJson) => {
-      console.log(dataJson)
+      console.log(dataJson);
       listeP.splice(0, listeP.length);
       for (let produit of dataJson) {
-        listeP.push(new Produit(produit.id, produit.nom, produit.qte, produit.photo));
+        listeP.push(
+          new Produit(produit.id, produit.nom, produit.qte, produit.photo),
+        );
       }
-      
     })
     .catch((error) => {
-      console.log(error)
-    })
+      console.log(error);
+    });
 }
-
 
 onMounted(() => {
   getProduit();
-})
-
-
+});
 
 function handlerDelete(id) {
   console.log(id);
   const fetchOptions = {
     method: "DELETE",
   };
-  // -- l'id du livre à supprimer doit être ajouté à la fin de l'url
+
   fetch(url + "/" + id, fetchOptions)
     .then((response) => {
       if (response.ok) {
@@ -49,16 +47,13 @@ function handlerDelete(id) {
     })
     .then((dataJSON) => {
       console.log(dataJSON);
-      getProduit()
+      getProduit();
     })
     .catch((error) => {
       console.error(error);
       return { status: 0 }; // Échec en cas d'erreur
     });
 }
-
-
-
 
 function ModifierP(fetchUrl, fetchOptions) {
   fetch(fetchUrl, fetchOptions)
@@ -72,25 +67,22 @@ function ModifierP(fetchUrl, fetchOptions) {
       getProduit();
     })
     .catch((error) => {
-      console.log(error)
-      console.log(fetchOptions)
-    })
+      console.log(error);
+      console.log(fetchOptions);
+    });
 }
-
 
 function handler1Add(p) {
- ModifierP(url,p.add1P)
-}
-  
-function handler1Delete(p) {
- ModifierP(url,p.delete1P)
+  ModifierP(url, p.add1P);
 }
 
+function handler1Delete(p) {
+  ModifierP(url, p.delete1P);
+}
 
 function handlerAdd(nom, qte, photo) {
   console.log(nom, qte);
   if (qte <= 0) {
-    
     qte = 1;
   }
   let myHeaders = new Headers();
@@ -99,7 +91,12 @@ function handlerAdd(nom, qte, photo) {
   const fetchOptions = {
     method: "POST",
     headers: myHeaders,
-    body: JSON.stringify({ id: Math.floor(Math.random() * 1000) + 100, nom: nom, qte: qte, photo: photo }),
+    body: JSON.stringify({
+      id: Math.floor(Math.random() * 1000) + 100,
+      nom: nom,
+      qte: qte,
+      photo: photo,
+    }),
   };
   fetch(url, fetchOptions)
     .then((response) => {
@@ -111,7 +108,7 @@ function handlerAdd(nom, qte, photo) {
     })
     .then((dataJSON) => {
       console.log(dataJSON);
-      getProduit()
+      getProduit();
     })
     .catch((error) => {
       console.error(error);
@@ -129,20 +126,21 @@ function handlerSearch(motcle) {
       console.log(dataJSON);
       let ProduitExist = dataJSON;
       let rechercheElement = document.getElementById("recherche");
-      rechercheElement.innerHTML = ""; 
+      rechercheElement.innerHTML = "";
       let ulElement = document.createElement("ul");
       ulElement.style.listStyleType = "none";
       for (let p of ProduitExist) {
         let liElement = document.createElement("li");
         let imageElement = document.createElement("img");
         imageElement.src = p.photo;
-        imageElement.style.cssText = "width: 200px; height: auto; display: block; margin: 0 auto;"; 
+        imageElement.style.cssText =
+          "width: 200px; height: auto; display: block; margin: 0 auto;";
         liElement.appendChild(imageElement);
         let messageElement = document.createElement("p");
         messageElement.textContent = p.nom + "  il en reste " + p.qte;
-        messageElement.style.textAlign = "center"; 
+        messageElement.style.textAlign = "center";
         messageElement.style.color = "#007bff";
-        messageElement.style.fontSize = "20px"; 
+        messageElement.style.fontSize = "20px";
         liElement.appendChild(messageElement);
 
         ulElement.appendChild(liElement);
@@ -151,42 +149,29 @@ function handlerSearch(motcle) {
     })
     .catch((error) => console.log(error));
 }
-
-
-
-
-
-
 </script>
 
 <template>
- <div>
-  <p id="ici"></p>
-  <h3>Qu'est-ce que vous voulez manger ? </h3>
+  <div>
+    <p id="ici"></p>
+    <h3>Qu'est-ce que vous voulez manger ?</h3>
 
-  <RechercheProduit @searchP="handlerSearch" />
-  <p id="ici2"></p>
-  <h3>Les aliments qu'on propose</h3>
-  <v-row dense>
-   
-    <CarteProduit v-for="produit in listeP"
-                   :key="produit.id"
-                   :produit="produit"
-                   :handler1Delete="handler1Delete"
-                   :handler1Add="handler1Add"
-                   :handlerDelete="handlerDelete"
-                   />
-    <AjouterProduit :handlerAdd="handlerAdd"/>
-    
-  </v-row>
-  
-  
-</div>
-
+    <RechercheProduit @searchP="handlerSearch" />
+    <p id="ici2"></p>
+    <h3>Les aliments qu'on propose</h3>
+    <v-row dense>
+      <CarteProduit
+        v-for="produit in listeP"
+        :key="produit.id"
+        :produit="produit"
+        :handler1Delete="handler1Delete"
+        :handler1Add="handler1Add"
+        :handlerDelete="handlerDelete"
+      />
+      <AjouterProduit :handlerAdd="handlerAdd" />
+    </v-row>
+  </div>
 </template>
-
-
-
 
 <style scoped>
 h3 {
@@ -197,12 +182,10 @@ h3 {
   padding: 20px;
 }
 
-#ici{
-padding-top: 50px;
+#ici {
+  padding-top: 50px;
 }
-#ici2{
+#ici2 {
   padding-bottom: 20px;
 }
-
 </style>
-
